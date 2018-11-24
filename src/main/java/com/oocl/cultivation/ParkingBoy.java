@@ -47,6 +47,7 @@ public class ParkingBoy {
                 } else {
                     if (index >= this.parkingLotNumber-1) {
                         this.lastErrorMessage = "Unrecognized parking ticket.";
+
                         return null;
                     }
                 }
@@ -57,7 +58,6 @@ public class ParkingBoy {
             return null;
         }
         return null;
-        //throw new RuntimeException("Not implemented");
     }
 
     public String getLastErrorMessage() {
