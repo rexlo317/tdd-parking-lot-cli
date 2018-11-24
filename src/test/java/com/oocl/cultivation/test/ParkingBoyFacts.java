@@ -189,4 +189,20 @@ class ParkingBoyFacts {
         assertEquals("The parking lot is full.", parkingBoy.getLastErrorMessage());
     }
 
+    @Test
+    void should_second_lot_2_cars() {
+        final int capacity = 2;
+        final int lotNumbers = 2;
+        ParkingLot[] parkingLots = new ParkingLot[lotNumbers];
+        for (int index=0; index<lotNumbers; index++) {
+            parkingLots[index] = new ParkingLot(capacity);
+        }
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
+        for (int index=0; index<lotNumbers*capacity; index++)
+            parkingBoy.park(new Car());
+
+        assertEquals(2, parkingLots[0].getCars().size());
+        assertEquals(2, parkingLots[1].getCars().size());
+    }
+
 }
