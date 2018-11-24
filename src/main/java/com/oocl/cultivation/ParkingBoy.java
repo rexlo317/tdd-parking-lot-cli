@@ -3,15 +3,13 @@ package com.oocl.cultivation;
 public class ParkingBoy {
 
     private ParkingLot[] parkingLots ;
-    private ParkingLot parkingLot;
     private String lastErrorMessage;
     private int parkingLotNumber;
 
     public ParkingBoy(ParkingLot parkingLot) {
-        parkingLots = new ParkingLot[1];
-        parkingLots[0] = parkingLot;
-        parkingLotNumber = 1;
-        parkingLotNumber = parkingLots.length;
+        this.parkingLots = new ParkingLot[1];
+        this.parkingLots[0] = parkingLot;
+        this.parkingLotNumber = 1;
     }
 
     public ParkingBoy(ParkingLot[] parkingLots) {
@@ -21,15 +19,15 @@ public class ParkingBoy {
 
     public ParkingTicket park(Car car) {
         // TODO: Please implement the method
-        for (int index = 0; index<parkingLotNumber; index++) {
-            if (parkingLots[index].getAvailableParkingPosition() >= 1) {
+        for (int index = 0; index<this.parkingLotNumber; index++) {
+            if (this.parkingLots[index].getAvailableParkingPosition() >= 1) {
                 ParkingTicket parkingTicket = new ParkingTicket();
-                parkingLots[index].getCars().put(parkingTicket, car);
-                lastErrorMessage = null;
+                this.parkingLots[index].getCars().put(parkingTicket, car);
+                this.lastErrorMessage = null;
                 return parkingTicket;
             } else {
-                if (index >= parkingLotNumber-1){
-                    lastErrorMessage = "The parking lot is full.";
+                if (index >= this.parkingLotNumber-1){
+                    this.lastErrorMessage = "The parking lot is full.";
                     return null;
                 }
             }
@@ -39,23 +37,23 @@ public class ParkingBoy {
 
     public Car fetch(ParkingTicket ticket) {
         if (ticket != null) {
-            for (int index=0; index<parkingLotNumber; index++) {
-                if (parkingLots[index].getCars().containsKey(ticket)) {
-                    Car tempCar = parkingLots[index].getCars().get(ticket);
-                    parkingLots[index].getCars().remove(ticket);
+            for (int index=0; index<this.parkingLotNumber; index++) {
+                if (this.parkingLots[index].getCars().containsKey(ticket)) {
+                    Car tempCar = this.parkingLots[index].getCars().get(ticket);
+                    this.parkingLots[index].getCars().remove(ticket);
                     ticket.setUsed(true);
-                    lastErrorMessage = null;
+                    this.lastErrorMessage = null;
                     return tempCar;
                 } else {
-                    if (index >= parkingLotNumber-1) {
-                        lastErrorMessage = "Unrecognized parking ticket.";
+                    if (index >= this.parkingLotNumber-1) {
+                        this.lastErrorMessage = "Unrecognized parking ticket.";
                         return null;
                     }
                 }
             }
         }
         else{
-            lastErrorMessage = "Please provide your parking ticket.";
+            this.lastErrorMessage = "Please provide your parking ticket.";
             return null;
         }
         return null;
