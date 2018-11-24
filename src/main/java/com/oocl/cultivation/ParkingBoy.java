@@ -15,9 +15,8 @@ public class ParkingBoy {
     }
 
     public ParkingBoy(ParkingLot[] parkingLots) {
-        parkingLotNumber = parkingLots.length;
-        parkingLots = new ParkingLot[parkingLotNumber];
         this.parkingLots = parkingLots;
+        this.parkingLotNumber = parkingLots.length;
     }
 
     public ParkingTicket park(Car car) {
@@ -29,9 +28,10 @@ public class ParkingBoy {
                 lastErrorMessage = null;
                 return parkingTicket;
             } else {
-                if (index >= parkingLotNumber-1)
-                lastErrorMessage = "The parking lot is full.";
-                return null;
+                if (index >= parkingLotNumber-1){
+                    lastErrorMessage = "The parking lot is full.";
+                    return null;
+                }
             }
         }
         return null;
@@ -47,9 +47,10 @@ public class ParkingBoy {
                     lastErrorMessage = null;
                     return tempCar;
                 } else {
-                    if (index >= parkingLotNumber-1)
+                    if (index >= parkingLotNumber-1) {
                         lastErrorMessage = "Unrecognized parking ticket.";
                         return null;
+                    }
                 }
             }
         }

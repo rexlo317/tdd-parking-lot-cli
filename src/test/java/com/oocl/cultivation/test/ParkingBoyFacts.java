@@ -151,4 +151,42 @@ class ParkingBoyFacts {
 
         assertEquals("The parking lot is full.", parkingBoy.getLastErrorMessage());
     }
+    @Test
+    void should_park_to_second_lot() {
+        final int capacity = 1;
+        final int lotNumbers = 2;
+        Car car = new Car();
+        Car car2 = new Car();
+        ParkingLot[] parkingLots = new ParkingLot[lotNumbers];
+        for (int index=0; index<lotNumbers; index++) {
+            parkingLots[index] = new ParkingLot(capacity);
+        }
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
+
+        ParkingTicket ticket = parkingBoy.park(car);
+        ParkingTicket ticket2 = parkingBoy.park(car2);
+        Car fetched = parkingBoy.fetch(ticket);
+        Car fetched2 = parkingBoy.fetch(ticket2);
+
+        assertSame(fetched, car);
+        assertSame(fetched2, car2);
+    }
+    @Test
+    void should_second_lot_full() {
+        final int capacity = 1;
+        final int lotNumbers = 2;
+        Car car = new Car();
+        ParkingLot[] parkingLots = new ParkingLot[lotNumbers];
+        for (int index=0; index<lotNumbers; index++) {
+            parkingLots[index] = new ParkingLot(capacity);
+        }
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
+
+        parkingBoy.park(new Car());
+        parkingBoy.park(new Car());
+        parkingBoy.park(new Car());
+
+        assertEquals("The parking lot is full.", parkingBoy.getLastErrorMessage());
+    }
+
 }
