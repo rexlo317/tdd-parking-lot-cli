@@ -254,7 +254,7 @@ class ParkingBoyFacts {
         parkingLots[0] = new ParkingLot(10);
         parkingLots[1] = new ParkingLot(1);
         Manager manager = new Manager(parkingLots);
-        manager.addParkingBoy("Parking Boy", new ParkingBoy(parkingLots));
+        manager.addParkingBoy("Parking Boy");
         Car car = new Car();
 
         ParkingTicket ticket = manager.getParkingBoy("Parking Boy").park(car);
@@ -269,7 +269,7 @@ class ParkingBoyFacts {
         parkingLots[0] = new ParkingLot(2);
         parkingLots[1] = new ParkingLot(10);
         Manager manager = new Manager(parkingLots);
-        manager.addParkingBoy("Smart Parking Boy", new SmartParkingBoy(parkingLots));
+        manager.addParkingBoy("Smart Parking Boy");
         Car car = new Car();
         ParkingTicket ticket = null;
 
@@ -289,7 +289,7 @@ class ParkingBoyFacts {
         parkingLots[0] = new ParkingLot(10);
         parkingLots[1] = new ParkingLot(1);
         Manager manager = new Manager(parkingLots);
-        manager.addParkingBoy("Super Smart Parking Boy", new SuperSmartParkingBoy(parkingLots));
+        manager.addParkingBoy("Super Smart Parking Boy");
         Car car = new Car();
         ParkingTicket ticket = null;
 
@@ -323,29 +323,30 @@ class ParkingBoyFacts {
         assertSame(fetched, car);
     }
 
+
     @Test
-    void should_manager_report_not_fetch_any_car_once_ticket_is_wrong() {
-        ParkingLot parkingLot = new ParkingLot();
+    void should_manager_get_message_if_there_is_not_enough_position() {
+        final int capacity = 1;
+        ParkingLot parkingLot = new ParkingLot(capacity);
         Manager manager = new Manager(parkingLot);
-        manager.addParkingBoy("Parking Boy", new ParkingBoy(parkingLot));
-        Car car = new Car();
-        ParkingTicket wrongTicket = new ParkingTicket();
+        manager.addParkingBoy("Parking Boy");
 
-        ParkingTicket ticket = manager.getParkingBoy("Parking Boy").park(car);
+        manager.getParkingBoy("Parking Boy").park(new Car());
+        manager.getParkingBoy("Parking Boy").park(new Car());
+        String message = manager.getErrorMessage();
 
-        assertNull(manager.getParkingBoy("Parking Boy").fetch(wrongTicket));
-        assertSame(car, manager.getParkingBoy("Parking Boy").fetch(ticket));
+        assertEquals("The parking lot is full.", message);
     }
 
     @Test
     void should_manager_query_message_once_the_ticket_is_wrong() {
         ParkingLot parkingLot = new ParkingLot();
         Manager manager = new Manager(parkingLot);
-        manager.addParkingBoy("Parking Boy", new ParkingBoy(parkingLot));
+        manager.addParkingBoy("Parking Boy");
         ParkingTicket wrongTicket = new ParkingTicket();
 
         manager.getParkingBoy("Parking Boy").fetch(wrongTicket);
-        String message = manager.getParkingBoy("Parking Boy").getLastErrorMessage();
+        String message = manager.getErrorMessage();
 
         assertEquals("Unrecognized parking ticket.", message);
     }
@@ -354,28 +355,17 @@ class ParkingBoyFacts {
     void should_manager_clear_the_message_once_the_operation_is_succeeded() {
         ParkingLot parkingLot = new ParkingLot();
         Manager manager = new Manager(parkingLot);
-        manager.addParkingBoy("Parking Boy", new ParkingBoy(parkingLot));
+        manager.addParkingBoy("Parking Boy");
         ParkingTicket wrongTicket = new ParkingTicket();
 
         manager.getParkingBoy("Parking Boy").fetch(wrongTicket);
         assertNotNull(manager.getParkingBoy("Parking Boy").getLastErrorMessage());
 
         ParkingTicket ticket =manager.getParkingBoy("Parking Boy").park(new Car());
+        String message = manager.getErrorMessage();
+
         assertNotNull(ticket);
-        assertNull(manager.getParkingBoy("Parking Boy").getLastErrorMessage());
-    }
-
-    @Test
-    void should_manager_not_fetch_any_car_once_ticket_is_not_provided() {
-        ParkingLot parkingLot = new ParkingLot();
-        Manager manager = new Manager(parkingLot);
-        manager.addParkingBoy("Parking Boy", new ParkingBoy(parkingLot));
-        Car car = new Car();
-
-        ParkingTicket ticket = manager.getParkingBoy("Parking Boy").park(car);
-
-        assertNull(manager.getParkingBoy("Parking Boy").fetch(null));
-        assertSame(car, manager.getParkingBoy("Parking Boy").fetch(ticket));
+        assertNull(message);
     }
 
 }
